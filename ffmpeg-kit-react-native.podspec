@@ -20,11 +20,6 @@ Pod::Spec.new do |s|
 
   s.dependency "React-Core"
 
-  s.prepare_command = <<-CMD
-      cd ffmpreg-kit || exit $?
-      ./ios.sh --xcframework || exit $?
-  CMD
-
   s.subspec 'min' do |ss|
       ss.source_files      = '**/FFmpegKitReactNativeModule.m',
                              '**/FFmpegKitReactNativeModule.h'
