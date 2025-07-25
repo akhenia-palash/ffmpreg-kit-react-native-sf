@@ -29,7 +29,7 @@
 ### 2. Installation
 
 ```sh
-yarn add ffmpeg-kit-react-native@https://github.com/lufinkey/ffmpreg-kit-react-native
+yarn add @palashakhenia/ffmpeg-kit-react-native-sf
 ```
 
 #### 2.1 Packages
