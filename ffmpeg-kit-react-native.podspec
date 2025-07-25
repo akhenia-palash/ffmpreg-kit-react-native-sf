@@ -127,7 +127,8 @@ Pod::Spec.new do |s|
   s.subspec 'full-gpl' do |ss|
       ss.source_files      = '**/FFmpegKitReactNativeModule.m',
                              '**/FFmpegKitReactNativeModule.h'
-      ss.dependency 'ffmpeg-kit-ios-full-gpl', "6.0"
+      #ss.dependency 'ffmpeg-kit-ios-full-gpl', "6.0"
+      ss.vendored_frameworks = "ffmpreg-kit/prebuilt-full-gpl-ios-models/*.{xcframework}"
       ss.ios.deployment_target = '12.1'
   end
 

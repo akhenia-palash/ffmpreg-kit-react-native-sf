@@ -1,7 +1,7 @@
 {
-  "name": "ffmpeg-kit-react-native",
-  "version": "6.0.2",
-  "description": "FFmpeg Kit for React Native",
+  "name": "@palashakhenia/ffmpeg-kit-react-native-sf",
+  "version": "1.0.0",
+  "description": "FFmpeg Kit for React Native By Palash",
   "main": "src/index",
   "types": "src/index.d.ts",
   "react-native": "src/index",
@@ -18,13 +18,13 @@
     "ffmpeg-kit",
     "ios"
   ],
-  "repository": "https://github.com/arthenica/ffmpeg-kit",
-  "author": "ARTHENICA <open-source@arthenica.com> (https://www.arthenica.com)",
+  "repository": "https://github.com/akhenia-palash/ffmpreg-kit-react-native-sf",
+  "author": "Palash Akhenia <connect@palashakhenia.com> (https://www.palashakhenia.com)",
   "license": "LGPL-3.0",
   "bugs": {
     "url": "https://github.com/arthenica/ffmpeg-kit/issues"
   },
-  "homepage": "https://github.com/arthenica/ffmpeg-kit",
+  "homepage": "https://github.com/akhenia-palash/ffmpreg-kit-react-native-sf",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
