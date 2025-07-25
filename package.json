@@ -1,6 +1,6 @@
 {
-  "name": "@palashakhenia/ffmpeg-kit-react-native-sf",
-  "version": "1.1.1",
+  "name": "palash-ffmpeg-kit-react-native-sf",
+  "version": "1.1.2",
   "description": "FFmpeg Kit for React Native By Palash",
   "main": "src/index",
   "types": "src/index.d.ts",
