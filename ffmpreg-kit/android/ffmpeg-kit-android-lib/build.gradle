@@ -1,65 +1,129 @@
-apply plugin: 'com.android.library'
+buildscript {
+  repositories {
+    google()
+    mavenCentral()
+  }
 
-android {
-    if (project.android.hasProperty("namespace")) {
-        namespace 'com.arthenica.ffmpegkit'
-    }
-    compileSdk 33
-    ndkVersion "22.1.7171670"
-
-    defaultConfig {
-        minSdk 24
-        targetSdk 33
-        versionCode 240600
-        versionName "6.0"
-        project.archivesBaseName = "ffmpeg-kit"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
-
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ["../libs"]
-        }
-    }
-
-    testOptions {
-        unitTests.returnDefaultValues = true
-        unitTests.all {
-            systemProperty 'enable.ffmpeg.kit.test.mode', 'true'
-        }
-    }
-
-    publishing {
-        singleVariant('release') {
-            withJavadocJar()
-            withSourcesJar()
-        }
-    }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:8.1.0'
+  }
 }
 
-task javadoc(type: Javadoc) {
-    title = 'FFmpegKit'
-    destinationDir = file("${projectDir}/../../docs/android/javadoc")
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    source = android.sourceSets.main.java.srcDirs
-    configurations.implementation.setCanBeResolved(true)
-    classpath += configurations.implementation
+apply plugin: 'com.android.library'
+
+static def safePackageName(String packageName) {
+  packageName.replace("-lts", "")
+}
+
+def safePackageVersion(String packageName) {
+  def version = project.properties['ffmpegKit.android.main.version']
+  def ltsVersion = project.properties['ffmpegKit.android.lts.version']
+  packageName.contains("-lts") ? ltsVersion + ".LTS" : version
+}
+
+def safeExtGet(String prop, String fallback) {
+  rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+android {
+  if (project.android.hasProperty("namespace")) {
+    namespace 'com.arthenica.ffmpegkit.reactnative'
+  }
+
+  compileSdkVersion 33
+  ndkVersion rootProject.ext.ndkVersion
+
+  defaultConfig {
+    minSdkVersion 24  // 🔧 Changed from conditional logic
+    // minSdkVersion safeExtGet('ffmpegKitPackage', 'https').contains("-lts") ? 16 : 24 old
+    targetSdkVersion 33
+    versionCode 602
+    versionName "6.0.2"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+    }
+  }
+
+  lintOptions {
+    disable 'GradleCompatible'
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_11
+    targetCompatibility JavaVersion.VERSION_11
+  }
+}
+
+repositories {
+  google()
+  mavenCentral()
+
+  flatDir {
+    dirs "$rootDir/libs" // ✅ Support loading local AARs like ffmpeg-kit-full-gpl.aar
+  }
+
+  def found = false
+  def defaultDir = null
+  def androidSourcesName = 'React Native sources'
+
+  if (rootProject.ext.has('reactNativeAndroidRoot')) {
+    defaultDir = rootProject.ext.get('reactNativeAndroidRoot')
+  } else {
+    defaultDir = new File(projectDir, 'node_modules/react-native/android')
+  }
+
+  if (defaultDir.exists()) {
+    maven {
+      url defaultDir.toString()
+      name androidSourcesName
+    }
+
+    logger.info(":${project.name}:reactNativeAndroidRoot ${defaultDir.canonicalPath}")
+    found = true
+  } else {
+    def parentDir = rootProject.projectDir
+    1.upto(5, {
+      if (found) return true
+      parentDir = parentDir.parentFile
+
+      def androidSourcesDir = new File(parentDir, 'node_modules/react-native')
+      def androidPrebuiltBinaryDir = new File(parentDir, 'node_modules/react-native/android')
+
+      if (androidPrebuiltBinaryDir.exists()) {
+        maven {
+          url androidPrebuiltBinaryDir.toString()
+          name androidSourcesName
+        }
+
+        logger.info(":${project.name}:reactNativeAndroidRoot ${androidPrebuiltBinaryDir.canonicalPath}")
+        found = true
+      } else if (androidSourcesDir.exists()) {
+        maven {
+          url androidSourcesDir.toString()
+          name androidSourcesName
+        }
+
+        logger.info(":${project.name}:reactNativeAndroidRoot ${androidSourcesDir.canonicalPath}")
+        found = true
+      }
+    })
+  }
+
+  if (!found) {
+    throw new GradleException(
+      "${project.name}: unable to locate React Native android sources. " +
+        "Ensure you have you installed React Native as a dependency in your project and try again."
+    )
+  }
 }
 
 dependencies {
-    api 'com.arthenica:smart-exception-java:0.2.1'
-    testImplementation "androidx.test.ext:junit:1.1.5"
-    testImplementation 'org.json:json:20230618'
+  api 'com.facebook.react:react-native:+'
+
+  //implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs') old
+  implementation(name: 'ffmpeg-kit-full-gpl', ext: 'aar')
 }
+
