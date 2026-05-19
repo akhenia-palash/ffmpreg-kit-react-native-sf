@@ -30,7 +30,8 @@ android {
 
     sourceSets {
         main {
-            jniLibs.srcDirs = ["../libs"]
+            // package shared object libraries built by ndk-build under android/obj/local
+            jniLibs.srcDirs = ["../obj/local"]
         }
     }
 

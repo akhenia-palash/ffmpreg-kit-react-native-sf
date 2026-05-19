@@ -65,6 +65,7 @@ LOCAL_C_INCLUDES := $(FFMPEG_INCLUDES)
 LOCAL_LDLIBS := -llog -lz -landroid
 LOCAL_STATIC_LIBRARIES := cpu-features
 LOCAL_ARM_NEON := ${MY_ARM_NEON}
+LOCAL_LDFLAGS += -Wl,-z,max-page-size=16384
 include $(BUILD_SHARED_LIBRARY)
 
 $(call import-module, cpu-features)
@@ -95,6 +96,7 @@ ifeq ($(MY_ARMV7_NEON), true)
         LOCAL_SHARED_LIBRARIES += c++_shared # otherwise NDK will not add the library for packaging
     endif
     LOCAL_ARM_NEON := true
+    LOCAL_LDFLAGS += -Wl,-z,max-page-size=16384
     include $(BUILD_SHARED_LIBRARY)
 
     $(call import-module, ffmpeg/neon)
@@ -117,6 +119,7 @@ ifeq ($(MY_BUILD_GENERIC_FFMPEG_KIT), true)
         LOCAL_SHARED_LIBRARIES += c++_shared # otherwise NDK will not add the library for packaging
     endif
     LOCAL_ARM_NEON := ${MY_ARM_NEON}
+    LOCAL_LDFLAGS += -Wl,-z,max-page-size=16384
     include $(BUILD_SHARED_LIBRARY)
 
     $(call import-module, ffmpeg)
