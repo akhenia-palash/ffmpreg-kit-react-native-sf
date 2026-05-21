@@ -9,8 +9,7 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "release": "release-it",
-    "postinstall": "node scripts/setup-models.js"
+    "release": "release-it"
   },
   "keywords": [
     "react-native",

@@ -329,15 +329,3 @@ All libraries created by `android.sh` can be found under the `prebuilt` director
 
 You can see how `FFmpegKit` is used inside an application by running `Android` test applications developed under the
 [FFmpegKit Test](https://github.com/arthenica/ffmpeg-kit-test) project.
-### 2.5 Checking .so alignment (16KB requirement)
-
-After building the release AAR for the `ffmpeg-kit-android-lib` module you can run a verification Gradle task that checks native `.so` alignment to 16KB.
-
-From the module directory run:
-
-```
-./gradlew :ffmpeg-kit-android-lib:assembleRelease
-./gradlew :ffmpeg-kit-android-lib:checkSoAlignment
-```
-
-The `checkSoAlignment` task extracts the produced AAR and inspects `.so` files with `readelf` to ensure their alignment equals `0x4000` (16KB). Ensure `readelf` is available in your PATH.

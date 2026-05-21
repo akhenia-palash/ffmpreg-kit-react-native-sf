@@ -2,11 +2,6 @@ require "json"
 
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
-# Helper function to find xcframework files
-def find_xcframeworks(pattern)
-  Dir.glob(File.join(__dir__, pattern)).select { |f| File.directory?(f) && f.end_with?('.xcframework') }
-end
-
 Pod::Spec.new do |s|
   s.name         = package["name"]
   s.version      = package["version"]
@@ -127,19 +122,8 @@ Pod::Spec.new do |s|
   s.subspec 'full-gpl' do |ss|
       ss.source_files      = '**/FFmpegKitReactNativeModule.m',
                              '**/FFmpegKitReactNativeModule.h'
-      
-      # Try to use local models directory first, then fall back to prebuilt
-      models_dir = File.expand_path('models/ffmpeg-kit-ios-full-gpl-latest/ffmpeg-kit-ios-full-gpl/6.0-80adc/*.{xcframework}', __dir__)
-      prebuilt_dir = File.expand_path('ffmpreg-kit/prebuilt-full-gpl-ios-models/*.{xcframework}', __dir__)
-      
-      if Dir.glob(models_dir).any?
-        ss.vendored_frameworks = "models/ffmpeg-kit-ios-full-gpl-latest/ffmpeg-kit-ios-full-gpl/6.0-80adc/*.{xcframework}"
-      elsif Dir.glob(prebuilt_dir).any?
-        ss.vendored_frameworks = "ffmpreg-kit/prebuilt-full-gpl-ios-models/*.{xcframework}"
-      else
-        Pod::UI.warn "[#{s.name}] ⚠️  No xcframework files found in models or prebuilt directories. Install process continues but linking may fail."
-      end
-      
+      #ss.dependency 'ffmpeg-kit-ios-full-gpl', "6.0"
+      ss.vendored_frameworks = "ffmpreg-kit/prebuilt-full-gpl-ios-models/*.{xcframework}"
       ss.ios.deployment_target = '12.1'
   end
 
