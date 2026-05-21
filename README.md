@@ -161,6 +161,16 @@ packages using the instructions below.
 
     ```
 
+- Note: The local `android/libs` folder contains only the default `https` package. When you set `ext.ffmpegKitPackage` to `full-gpl` or `full-gpl-lts`, Android will resolve that package from Maven instead of using the bundled local AAR.
+
+    ```gradle
+    ext {
+        ffmpegKitPackage = "full-gpl"
+    }
+    ```
+
+  Make sure the selected package supports your target SDK level. For example, `full-gpl` requires `minSdkVersion 24`, while `full-gpl-lts` can be used with `minSdkVersion 16`.
+
 ##### 2.2.2 Enabling a Package on iOS
 
 - Edit `ios/Podfile` file and add the package name as `subspec`. After that run `pod install` again.

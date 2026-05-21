@@ -124,10 +124,18 @@ repositories {
   }
 }
 
+def ffmpegKitPackageName = safeExtGet('ffmpegKitPackage', 'https')
+
 dependencies {
   api 'com.facebook.react:react-native:+'
-  //implementation 'com.arthenica:ffmpeg-kit-' + safePackageName(safeExtGet('ffmpegKitPackage', 'https')) + ':' + safePackageVersion(safeExtGet('ffmpegKitPackage', 'https'))
-  implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+
+  // Local libs include the default https package.
+  // Custom packages such as full-gpl / full-gpl-lts are resolved from Maven.
+  if (ffmpegKitPackageName == 'https') {
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+  } else {
+    implementation 'com.arthenica:ffmpeg-kit-' + safePackageName(ffmpegKitPackageName) + ':' + safePackageVersion(ffmpegKitPackageName)
+  }
 }
 
 /*tasks.register("buildFFmpegKit") {
