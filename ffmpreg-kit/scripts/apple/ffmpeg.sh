@@ -411,20 +411,6 @@ done
 # SET ENABLE GPL FLAG WHEN REQUESTED
 if [ "$GPL_ENABLED" == "yes" ]; then
   CONFIGURE_POSTFIX+=" --enable-gpl"
-
-  if pkg-config --exists x264 2>>"${BASEDIR}"/build.log; then
-    CONFIGURE_POSTFIX+=" --enable-libx264"
-    echo -e "INFO: Enabled libx264 for ultrafast support\n" 1>>"${BASEDIR}"/build.log 2>&1
-  else
-    echo -e "INFO: x264 pkg-config not found, libx264 will not be enabled\n" 1>>"${BASEDIR}"/build.log 2>&1
-  fi
-
-  if pkg-config --exists x265 2>>"${BASEDIR}"/build.log; then
-    CONFIGURE_POSTFIX+=" --enable-libx265"
-    echo -e "INFO: Enabled libx265 for ultrafast support\n" 1>>"${BASEDIR}"/build.log 2>&1
-  else
-    echo -e "INFO: x265 pkg-config not found, libx265 will not be enabled\n" 1>>"${BASEDIR}"/build.log 2>&1
-  fi
 fi
 
 # ALWAYS BUILD SHARED LIBRARIES

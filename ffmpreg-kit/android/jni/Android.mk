@@ -90,7 +90,6 @@ ifeq ($(MY_ARMV7_NEON), true)
     LOCAL_MODULE := ffmpegkit_armv7a_neon
     LOCAL_SRC_FILES := $(MY_SRC_FILES)
     LOCAL_CFLAGS := $(MY_CFLAGS)
-    LOCAL_C_INCLUDES := $(FFMPEG_INCLUDES)
     LOCAL_LDLIBS := $(MY_LDLIBS)
     LOCAL_SHARED_LIBRARIES := libavcodec_neon libavfilter_neon libswscale_neon libavformat_neon libavutil_neon libswresample_neon libavdevice_neon
     ifeq ($(APP_STL), c++_shared)
@@ -114,7 +113,6 @@ ifeq ($(MY_BUILD_GENERIC_FFMPEG_KIT), true)
     LOCAL_MODULE := ffmpegkit
     LOCAL_SRC_FILES := $(MY_SRC_FILES)
     LOCAL_CFLAGS := $(MY_CFLAGS)
-    LOCAL_C_INCLUDES := $(FFMPEG_INCLUDES)
     LOCAL_LDLIBS := $(MY_LDLIBS)
     LOCAL_SHARED_LIBRARIES := libavfilter libavformat libavcodec libavutil libswresample libavdevice libswscale
     ifeq ($(APP_STL), c++_shared)

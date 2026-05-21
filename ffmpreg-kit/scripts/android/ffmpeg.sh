@@ -27,7 +27,6 @@ HOST=$(get_host)
 export CFLAGS=$(get_cflags "${LIB_NAME}")
 export CXXFLAGS=$(get_cxxflags "${LIB_NAME}")
 export LDFLAGS=$(get_ldflags "${LIB_NAME}")
-export LDFLAGS+=" -Wl,-z,max-page-size=16384,--hash-style=both"
 export PKG_CONFIG_LIBDIR="${INSTALL_PKG_CONFIG_DIR}"
 
 cd "${BASEDIR}"/src/"${LIB_NAME}" 1>>"${BASEDIR}"/build.log 2>&1 || return 1
@@ -337,20 +336,6 @@ done
 # SET ENABLE GPL FLAG WHEN REQUESTED
 if [ "$GPL_ENABLED" == "yes" ]; then
   CONFIGURE_POSTFIX+=" --enable-gpl"
-
-  if pkg-config --exists x264 2>>"${BASEDIR}"/build.log; then
-    CONFIGURE_POSTFIX+=" --enable-libx264"
-    echo -e "INFO: Enabled libx264 for ultrafast support\n" 1>>"${BASEDIR}"/build.log 2>&1
-  else
-    echo -e "INFO: x264 pkg-config not found, libx264 will not be enabled\n" 1>>"${BASEDIR}"/build.log 2>&1
-  fi
-
-  if pkg-config --exists x265 2>>"${BASEDIR}"/build.log; then
-    CONFIGURE_POSTFIX+=" --enable-libx265"
-    echo -e "INFO: Enabled libx265 for ultrafast support\n" 1>>"${BASEDIR}"/build.log 2>&1
-  else
-    echo -e "INFO: x265 pkg-config not found, libx265 will not be enabled\n" 1>>"${BASEDIR}"/build.log 2>&1
-  fi
 fi
 
 export LDFLAGS+=" -L${ANDROID_NDK_ROOT}/platforms/android-${API}/arch-${TOOLCHAIN_ARCH}/usr/lib"

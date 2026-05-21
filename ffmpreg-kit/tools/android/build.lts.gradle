@@ -60,34 +60,6 @@ task javadoc(type: Javadoc) {
     classpath += configurations.implementation
 }
 
-task inspectSoAlignment {
-    group = 'verification'
-    description = 'Inspect the program header alignments of Android shared libraries produced by ndk-build.'
-    doLast {
-        def soRoot = file("${projectDir}/../obj/local")
-        if (!soRoot.exists()) {
-            throw new GradleException("NDK build output not found: $soRoot")
-        }
-
-        fileTree(soRoot).matching { include '**/*.so' }.files.sort().each { File soFile ->
-            println "Inspecting ${soFile.absolutePath}"
-            def output = new ByteArrayOutputStream()
-            exec {
-                commandLine 'readelf', '-l', soFile.absolutePath
-                standardOutput = output
-                errorOutput = output
-                ignoreExitValue = true
-            }
-            output.toString().eachLine { line ->
-                if (line.contains('LOAD') || line.contains('Align')) {
-                    println line
-                }
-            }
-            println()
-        }
-    }
-}
-
 dependencies {
     api 'com.arthenica:smart-exception-java:0.2.1'
     testImplementation "androidx.test.ext:junit:1.1.5"
