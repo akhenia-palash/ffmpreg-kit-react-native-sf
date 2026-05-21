@@ -58,6 +58,10 @@ repositories {
   mavenCentral()
   google()
 
+  flatDir {
+    dirs "$rootDir/libs"
+  }
+  
   def found = false
   def defaultDir = null
   def androidSourcesName = 'React Native sources'
@@ -127,7 +131,7 @@ repositories {
 dependencies {
   api 'com.facebook.react:react-native:+'
   //implementation 'com.arthenica:ffmpeg-kit-' + safePackageName(safeExtGet('ffmpegKitPackage', 'https')) + ':' + safePackageVersion(safeExtGet('ffmpegKitPackage', 'https'))
-  implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+  implementation 'io.github.jamaismagic.ffmpeg:ffmpeg-kit-main-16kb:6.1.4'
 }
 
 /*tasks.register("buildFFmpegKit") {
