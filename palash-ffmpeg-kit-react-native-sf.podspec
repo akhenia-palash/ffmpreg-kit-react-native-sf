@@ -17,7 +17,11 @@ Pod::Spec.new do |s|
 
   s.platform          = :ios
   s.requires_arc      = true
-  s.static_framework  = true
+  # NOTE: static_framework is false because the bundled xcframeworks
+  # at ffmpreg-kit/prebuilt-full-gpl-ios-models/ contain DYNAMIC binaries.
+  # Declaring static_framework=true here caused CocoaPods to error with
+  # "contains both static and dynamic frameworks".
+  s.static_framework  = false
 
   s.source       = { :git => "https://github.com/lufinkey/ffmpreg-kit-react-native.git", :tag => "react.native.v#{s.version}" }
 
