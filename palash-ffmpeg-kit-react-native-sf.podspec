@@ -21,6 +21,9 @@ Pod::Spec.new do |s|
   s.platform          = :ios
   s.requires_arc      = true
   s.static_framework  = true
+  s.user_target_xcconfig = {
+    'LD_RUNPATH_SEARCH_PATHS' => '$(inherited) @loader_path/Frameworks'
+  }
 
   s.source       = { :git => "https://github.com/lufinkey/ffmpreg-kit-react-native.git", :tag => "react.native.v#{s.version}" }
 
