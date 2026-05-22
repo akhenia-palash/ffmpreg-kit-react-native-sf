@@ -32,7 +32,7 @@
     "android/src",
     "ios",
     "ffmpreg-kit/prebuilt-full-gpl-ios-models",
-    "ffmpeg-kit-react-native-sf.podspec",
+    "palash-ffmpeg-kit-react-native-sf.podspec",
     "README.md"
   ],
   "publishConfig": {
