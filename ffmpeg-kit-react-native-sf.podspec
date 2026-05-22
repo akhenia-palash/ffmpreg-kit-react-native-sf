@@ -2,16 +2,15 @@ require "json"
 
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
-# Helper function to find xcframework path, supporting multiple locations
-def find_framework_path(variants)
-  variants.each do |path|
-    return "#{path}/*.{xcframework}" if Dir.exist?(path) && Dir.glob("#{path}/*.xcframework").any?
-  end
-  # Fallback to primary path if none found (will error at pod install time if missing)
-  "ffmpreg-kit/prebuilt-full-gpl-ios-models/*.{xcframework}"
-end
-
 Pod::Spec.new do |s|
+  # Helper lambda to find xcframework path, supporting multiple locations
+  find_framework_path = ->(variants) do
+    variants.each do |path|
+      return "#{path}/*.{xcframework}" if Dir.exist?(path) && Dir.glob("#{path}/*.xcframework").any?
+    end
+    # Fallback to primary path if none found (will error at pod install time if missing)
+    "ffmpreg-kit/prebuilt-full-gpl-ios-models/*.{xcframework}"
+  end
   s.name         = package["name"]
   s.version      = package["version"]
   s.summary      = package["description"]
@@ -133,7 +132,7 @@ Pod::Spec.new do |s|
                              '**/FFmpegKitReactNativeModule.h'
       #ss.dependency 'ffmpeg-kit-ios-full-gpl', "6.0"
       # Auto-detect xcframework path: check models/ folder first, then fall back to bundled path
-      framework_path = find_framework_path([
+      framework_path = find_framework_path.call([
         "models/ffmpeg-kit-ios-full-gpl-latest",
         "ffmpreg-kit/prebuilt-full-gpl-ios-models"
       ])
