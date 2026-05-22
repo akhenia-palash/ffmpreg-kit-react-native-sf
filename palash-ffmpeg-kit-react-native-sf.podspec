@@ -137,7 +137,6 @@ Pod::Spec.new do |s|
         "ffmpreg-kit/prebuilt-full-gpl-ios-models"
       ])
       ss.vendored_frameworks = framework_path
-      ss.static_framework = true
       ss.ios.deployment_target = '12.1'
   end
 
