@@ -2,15 +2,12 @@ require "json"
 
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
+# Helper function to find xcframework files
+def find_xcframeworks(pattern)
+  Dir.glob(File.join(__dir__, pattern)).select { |f| File.directory?(f) && f.end_with?('.xcframework') }
+end
+
 Pod::Spec.new do |s|
-  # Helper lambda to find xcframework path, supporting multiple locations
-  find_framework_path = ->(variants) do
-    variants.each do |path|
-      return "#{path}/*.{xcframework}" if Dir.exist?(path) && Dir.glob("#{path}/*.xcframework").any?
-    end
-    # Fallback to primary path if none found (will error at pod install time if missing)
-    "ffmpreg-kit/prebuilt-full-gpl-ios-models/*.{xcframework}"
-  end
   s.name         = package["name"]
   s.version      = package["version"]
   s.summary      = package["description"]
@@ -21,9 +18,6 @@ Pod::Spec.new do |s|
   s.platform          = :ios
   s.requires_arc      = true
   s.static_framework  = true
-  s.user_target_xcconfig = {
-    'LD_RUNPATH_SEARCH_PATHS' => '$(inherited) @loader_path/Frameworks'
-  }
 
   s.source       = { :git => "https://github.com/lufinkey/ffmpreg-kit-react-native.git", :tag => "react.native.v#{s.version}" }
 
@@ -133,13 +127,19 @@ Pod::Spec.new do |s|
   s.subspec 'full-gpl' do |ss|
       ss.source_files      = '**/FFmpegKitReactNativeModule.m',
                              '**/FFmpegKitReactNativeModule.h'
-      #ss.dependency 'ffmpeg-kit-ios-full-gpl', "6.0"
-      # Auto-detect xcframework path: check models/ folder first, then fall back to bundled path
-      framework_path = find_framework_path.call([
-        "models/ffmpeg-kit-ios-full-gpl-latest",
-        "ffmpreg-kit/prebuilt-full-gpl-ios-models"
-      ])
-      ss.vendored_frameworks = framework_path
+
+      # Try to use local models directory first, then fall back to prebuilt
+      models_dir = File.expand_path('models/ffmpeg-kit-ios-full-gpl-latest/ffmpeg-kit-ios-full-gpl/6.0-80adc/*.{xcframework}', __dir__)
+      prebuilt_dir = File.expand_path('ffmpreg-kit/prebuilt-full-gpl-ios-models/*.{xcframework}', __dir__)
+
+      if Dir.glob(models_dir).any?
+        ss.vendored_frameworks = "models/ffmpeg-kit-ios-full-gpl-latest/ffmpeg-kit-ios-full-gpl/6.0-80adc/*.{xcframework}"
+      elsif Dir.glob(prebuilt_dir).any?
+        ss.vendored_frameworks = "ffmpreg-kit/prebuilt-full-gpl-ios-models/*.{xcframework}"
+      else
+        Pod::UI.warn "[#{s.name}] ⚠️  No xcframework files found in models or prebuilt directories. Install process continues but linking may fail."
+      end
+
       ss.ios.deployment_target = '12.1'
   end
 
