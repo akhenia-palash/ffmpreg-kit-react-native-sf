@@ -29,6 +29,7 @@
   "homepage": "https://github.com/akhenia-palash/ffmpreg-kit-react-native-sf",
   "files": [
     "src",
+    "scripts",
     "android/build.gradle",
     "android/gradle.properties",
     "android/src",
