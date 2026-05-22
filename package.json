@@ -1,6 +1,6 @@
 {
   "name": "palash-ffmpeg-kit-react-native-sf",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "FFmpeg Kit for React Native By Palash",
   "main": "src/index",
   "types": "src/index.d.ts",
