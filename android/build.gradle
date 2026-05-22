@@ -58,10 +58,6 @@ repositories {
   mavenCentral()
   google()
 
-  flatDir {
-    dirs "$rootDir/libs"
-  }
-  
   def found = false
   def defaultDir = null
   def androidSourcesName = 'React Native sources'
@@ -130,33 +126,5 @@ repositories {
 
 dependencies {
   api 'com.facebook.react:react-native:+'
-  //implementation 'com.arthenica:ffmpeg-kit-' + safePackageName(safeExtGet('ffmpegKitPackage', 'https')) + ':' + safePackageVersion(safeExtGet('ffmpegKitPackage', 'https'))
   implementation 'io.github.jamaismagic.ffmpeg:ffmpeg-kit-main-16kb:6.1.4'
 }
-
-/*tasks.register("buildFFmpegKit") {
-  doLast {
-    if (android.ndkDirectory == null || android.ndkDirectory.path == "null" || !android.ndkDirectory.exists()) {
-      throw new GradleException("Invalid NDK directory ${android.ndkDirectory}")
-    }
-    println "Attempting to build ffmpeg-kit from source..."
-    println("ANDROID_SDK_ROOT = ${android.sdkDirectory.absolutePath}")
-    println("ANDROID_NDK_ROOT = ${android.ndkDirectory.absolutePath}")
-    exec {
-      workingDir "${project.projectDir}/../ffmpreg-kit"
-      commandLine "mkdir", "-p", "./android/ffmpeg-kit-android-lib/src/main/res/raw"
-    }
-    exec {
-      workingDir "${project.projectDir}/../ffmpreg-kit"
-      commandLine "touch", "./android/ffmpeg-kit-android-lib/src/main/res/raw/license_cpu_features.txt"
-    }
-    exec {
-      workingDir "${project.projectDir}/../ffmpreg-kit"
-      environment "ANDROID_SDK_ROOT", android.sdkDirectory.absolutePath
-      environment "ANDROID_NDK_ROOT", android.ndkDirectory.absolutePath
-      commandLine "bash", "./android.sh"
-    }
-  }
-}
-
-preBuild.dependsOn buildFFmpegKit*/

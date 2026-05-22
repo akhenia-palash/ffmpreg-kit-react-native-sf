@@ -1,6 +1,6 @@
 {
   "name": "palash-ffmpeg-kit-react-native-sf",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "FFmpeg Kit for React Native By Palash",
   "main": "src/index",
   "types": "src/index.d.ts",
@@ -25,6 +25,16 @@
     "url": "https://github.com/arthenica/ffmpeg-kit/issues"
   },
   "homepage": "https://github.com/akhenia-palash/ffmpreg-kit-react-native-sf",
+  "files": [
+    "src",
+    "android/build.gradle",
+    "android/gradle.properties",
+    "android/src",
+    "ios",
+    "ffmpreg-kit/prebuilt-full-gpl-ios-models",
+    "ffmpeg-kit-react-native-sf.podspec",
+    "README.md"
+  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
